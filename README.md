@@ -1,5 +1,5 @@
-# Moisiture Magica voxel Shader
-Repository for magica voxel shader: Moisiture.
+# Moisture Magica voxel Shader
+Repository for magica voxel shader.
 
 ## Installation
 
@@ -16,7 +16,7 @@ Use them according to the description below and try mixing them up for better re
 Inspired on this shader.
 This shader let your create the effect of moisiture on your voxel buildings.
 
-![...](shader.png?raw=true "Title")
+![...](shader2.png?raw=true "Title")
 
 There are 6 parameters:
 
