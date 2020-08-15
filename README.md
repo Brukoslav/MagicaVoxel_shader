@@ -13,7 +13,7 @@ Use them according to the description below and try mixing them up for better re
 
 ### Moisture Shader
 
-Inspired on [this shader by patStar](https://github.com/patStar).
+Inspired on [shader by patStar](https://github.com/patStar) (thanks!).
 This shader let your create the effect of moisiture on your voxel buildings.
 
 ![...](shader2.png?raw=true "Title")
