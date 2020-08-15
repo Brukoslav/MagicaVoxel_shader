@@ -9,7 +9,7 @@ Install the shader by copying the file `moisture.txt` into the `shader` director
 
 After installing the shader you should see them in the shader menu.
 
-Use them according to the description below and try mixing them up for better results. You can ask me anything in [twitter](https://twitter.com/EKremlinois
+Use them according to the description below and try mixing them up for better results. You can ask me anything in [twitter](https://twitter.com/EKremlinois).
 
 ### Moisture Shader
 
