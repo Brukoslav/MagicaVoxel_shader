@@ -1,0 +1,106 @@
+// xs_begin
+// author : '@brukoslav'
+// arg : {id = '0' name = 'Modo' value = '0'   range = '0 3'    step = '1'    decimal = '0' }
+// arg : {id = '1' name = 'Avance' value = '0.5'   range = '0 1'    step = '0.01'    decimal = '1' }
+// arg : { id = '2'  name = 'Random Seed'  value = '123'  range = '0 1000000'  step = '1'  decimal = '0' }
+// arg : { id = '3'  name = 'Additional Colors'  value = '0'  range = '-255 255'  step = '1'  decimal = '0' }
+// arg : { id = '4'  name = 'Avance Colors'  value = '0.5'   range = '0 1'    step = '0.01'    decimal = '2' }
+// arg : { id = '5'  name = 'Unif Colors'  value = '0.5'   range = '0 1'    step = '0.01'    decimal = '2' }
+// xs_end
+
+float modo = float(iArgs[0]);
+float avance = float(iArgs[1]);
+float seed = float(iArgs[2]);
+float colorRange = float(iArgs[3]);
+float avanceColor = float(iArgs[4]);
+float avanceColorMedio = float(iArgs[5]);
+
+bool isGrowColor(vec3 v){
+	return voxel(v) >= min(i_color_index, i_color_index + colorRange) && voxel(v) <= max(i_color_index, i_color_index + colorRange);
+}
+
+float dir() {
+	return (1 - modo*2);
+}
+
+//Add more randomness
+float totalMios(vec3 v) {
+	float a = 0;
+	float distance = 10;
+	for(float x=-distance; x<=distance;x+=1.){
+		for(float y=-distance; y<=distance;y+=1.){
+			for(float z=-distance; z<=distance;z+=1.){								
+				if (isGrowColor(vec3(v.x+x,v.y+y,v.z+z))) {
+					a = a + 1.;
+				}
+			}
+		}
+	}
+	return a;
+}
+
+float random(vec3 v){
+	float n = v.x*v.y*v.z + seed;
+	return abs(fract(sin(1./tan(n) + (totalMios(v) + seed) * 1235.342)));
+}
+
+float random2(vec3 v){
+	float n = v.x*v.y*v.z + seed + 1500;
+	return abs(fract(sin(1./tan(n) + (totalMios(v) + seed) * 1235.342)));
+}
+
+
+bool shouldBePlaced(vec3 v){
+	float dif = (i_color_index + colorRange - voxel(v));
+	if(isGrowColor(vec3(v.x,v.y,v.z + dir() )) && !isGrowColor(v) && random(v) < avance){
+		seed += 1;
+		return true;
+	}
+	return false;
+}
+
+bool ladosParecidos(vec3 v) {
+	//Si existe una (o dos?) vecina que sea de ese color
+	int vecina = 0;
+	if (voxel(vec3(v.x+1.,v.y,v.z)) == voxel(v) + 1) {
+		vecina++;
+	}
+	if (voxel(vec3(v.x-1.,v.y,v.z)) == voxel(v) + 1) {
+		vecina++;
+	}
+	if (voxel(vec3(v.x,v.y+1.,v.z)) == voxel(v) + 1) {
+		vecina++;
+	}
+	if (voxel(vec3(v.x,v.y-1.,v.z)) == voxel(v) + 1) {
+		vecina++;
+	}
+	if (vecina>0) {
+		return true;
+	} else {
+		if(random2(v) > avanceColorMedio) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+}
+
+float map(vec3 v) {
+	//Si no hay nada arriba o es mayor, aumenta
+	if ( isGrowColor(v) && ladosParecidos(v) && (!isGrowColor(vec3(v.x,v.y,v.z + dir())) || voxel(v) < voxel(vec3(v.x,v.y,v.z + dir())) ) ) {
+		if (random(v) < avanceColor) {
+			return min(i_color_index + colorRange,voxel(v) + 1);
+		} else {
+			return voxel(v);
+		}
+	} else if(shouldBePlaced(v) && voxel(v)!=0 && !isGrowColor(v)){
+		return  i_color_index;
+		//if(random(v) < avanceColor*(i_color_index + colorRange - voxel(v))) {
+		//	return min(i_color_index + colorRange,  voxel(vec3(v.x,v.y,v.z + dir() )) + 1);
+		//} else {
+		//	return  voxel(vec3(v.x,v.y,v.z - dir() ));
+		//}
+	} else {
+		return voxel(v);
+	}
+}
