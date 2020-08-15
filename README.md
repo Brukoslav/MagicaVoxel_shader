@@ -28,3 +28,7 @@ There are 6 parameters:
 | Additional Colors | -255 to 255 | You may paint the different layers of your plant in different colors. The base Color will be the selected color but you can define a range of colors following or preceding the selected color here. |
 | Avance Colors | 0 to 1 | How speed other colors will appear in your moisture. |
 | Unif Colors | 0 to 1 | Bigger values give you a more random other-colors moisture, lower values seems more unified. |
+
+### Tips
+
+![...](shader3.png?raw=true "Title")
