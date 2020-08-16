@@ -31,7 +31,7 @@ float totalMios(vec3 v) {
 		for(float y=-distance; y<=distance;y+=1.){
 			for(float z=-distance; z<=distance;z+=1.){								
 				if (isGrowColor(vec3(v.x+x,v.y+y,v.z+z))) {
-					a = a + 1.;
+					a = a + voxel(vec3(v.x+x,v.y+y,v.z+z));
 				}
 			}
 		}
